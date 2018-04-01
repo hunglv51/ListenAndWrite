@@ -1,0 +1,207 @@
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+
+.level {
+    display: inline;
+    position: relative;
+    font: 200px Helvetica, Sans-Serif;
+    letter-spacing: -5px;
+    color: rgba(0,0,255,0.5);
+}
+
+    .level:after {
+        content: "Hello";
+        position: absolute;
+        left: 10px;
+        top: 5px;
+        color: rgba(255,0,0,0.5);
+    }
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.text-right {
+    float: right;
+}
+
+.tittle {
+    font-weight: bold;
+    font-size: 1.875vw;
+    display: block;
+    margin: 11px 0 17px 0;
+    line-height: 80px;
+    color: #f1ebe5;
+    text-shadow: 0 13.36px 8.896px #c4b59d,0 -2px 1px #fff;
+    letter-spacing: -4px;
+    color: #202020;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    text-align: center;
+}
+
+
+
+.hero-text {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.2vw;
+}
+
+    .hero-text button {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 10px 25px;
+        color: black;
+        background-color: #ddd;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+        .hero-text button:hover {
+            background-color: #ff9800;
+            color: white;
+        }
+
+.container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+    /*.container img {
+        vertical-align: middle;
+    }*/
+
+    .container .content {
+        position: absolute;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+        color: #f1f1f1;
+        width: 92%;
+        padding: 20px;
+    }
+
+
+/* table */
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    font-size: 1.2vw;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+td {
+    width: 80%;
+}
+
+.button {
+    border-radius: 12px;
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 1.2vw;
+}
+
+input[type=text], select, textarea {
+    width: 100%; /* Full width */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 6px; /* Add a top margin */
+    margin-bottom: 16px; /* Bottom margin */
+    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+audio {
+    border-left: 6px solid red;
+    background-color: lightgrey;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.common {
+    font-weight: bold;
+}
+
+.correct {
+    color: red;
+    font-style: italic;
+}
+
+.wrong {
+    color: blue;
+    font-weight: lighter;
+    font-style: italic;
+    text-decoration: line-through;
+}
+
+
+a, a:hover, a:active {
+    color: #0000ff;
+    text-decoration: none;
+}
+
+#level {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 30px;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.row {
+    clear: both;
+}
+
+#main {
+    border: 2px solid red;
+    height: 200px;
+    width: 800px;
+}
+
+.giua {
+    margin: 5px auto;
+    display: block;
+    font-size: 20px;
+}
+
+.white{
+    color: white;
+}
