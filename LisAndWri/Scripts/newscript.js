@@ -6,11 +6,14 @@ var numTrack = $('#numTrack').val();    // số track
 var answer = '', title = '';            // tiêu đề và câu trả lời
 var myAudio = document.getElementById('audio');        //lấy audio
 var controller = 0;
+var flag = true;  // bật nút check
+
 
 
 $("#hideText").hide();
 $("#btn-next2").hide();
 $("#btn-score").hide();
+$('#chartContainer').hide();
 
 getTrack($('h2#audioTitle').text() + "_track" + currTrack);    // lấy track hiện tại
 //call play audio
@@ -31,6 +34,9 @@ function playAudio() {
 }
 //Next track   track tiếp theo
 $('.btn-next').click(function () {
+    $('#chartContainer').hide();
+    $('#input').removeAttr('readonly');
+    flag = true;
     myAudio.pause();            // dừng phát
     clearInterval(controller);      // xóa dữ liệu
     if ((currTrack + '') < numTrack)
@@ -50,6 +56,9 @@ $('.btn-next').click(function () {
 });
 //prev track
 $('#btn-prev').click(function () {
+    $('#chartContainer').hide();
+    $('#input').removeAttr('readonly');
+    flag = true;
     myAudio.pause();
     clearInterval(controller);
     if (currTrack > 1)
@@ -58,7 +67,7 @@ $('#btn-prev').click(function () {
     $('#currTrack').val(currTrack);
     $('#btn-next:disabled').removeAttr('disabled');
     $('#btn-play').removeAttr('disabled');
-    if (currTrack <= 0)
+    if (currTrack <= 1)
         $(this).attr('disabled', 'disabled');
     $('textarea').val('');
     $('div#answer').html('');
@@ -67,17 +76,8 @@ $('#btn-prev').click(function () {
 });
 //call ajax to get current track   
 function getTrack(trackTitle) {
-    var url = 'http://localhost:54941/Track/GetTrack?trackTitle=' + trackTitle;
-    // var url = '/Track/GetTrack';
+    var url = 'http://localhost:54941/Track/GetTrack?trackTitle=' + trackTitle;;
     $.ajaxSetup({ cache: false });       //to prevent cache
-    //$.getJSON(url, {
-    //    trackTitle: trackTitle
-    //}, function (data) {     // lấy dữ liệu từ CSDL
-    //    timeStart = data.TimeStart;
-    //    duration = data.Duration;
-    //    title = data.AudioTitle;
-    //    answer = data.Answer;
-    //});
     $.getJSON(url, function (data) {     // lấy dữ liệu từ CSDL
         timeStart = data.TimeStart;
         duration = data.Duration;
@@ -88,10 +88,13 @@ function getTrack(trackTitle) {
 
 // for check end display result   hiện nút check khi bấm vào ô nhập kết quả
 $('textarea#input').click(function () {
-    $('#btn-check').removeAttr('disabled');
+    if(flag)
+        $('#btn-check').removeAttr('disabled');
+    flag = false;
 });
 //check and answer    kiểm tra và đáp án
 $('#btn-check').click(function () {
+    $("#input").attr('readonly', 'readonly'); // ko cho nhập đáp án nữa
     myAudio.pause();                        // dừng phát
     clearInterval(controller);                 // xóa "bộ nhớ"
     var textAnswer = answer;                    // đấp án
@@ -121,8 +124,8 @@ $('#btn-check').click(function () {
         var fixText = [];                   // mảng chữ sửa lỗi
         var k = 0;
         var i = arrInput.length, j = arrAnswer.length;
-        //scores[currTrack - 1] = (arrAnswer.length > arrInput.length) ? (myArr[i][j] * 100 / arrAnswer.length) : (myArr[i][j] * 100 / arrInput.length);
-        //console.log(scores[currTrack - 1]);
+        scores[currTrack - 1] = (arrAnswer.length > arrInput.length) ? (myArr[i][j] * 100 / arrAnswer.length) : (myArr[i][j] * 100 / arrInput.length);
+        console.log(scores[currTrack - 1]);
         while ((i >= 0) && (j >= 0)) {
             if (j == 0 && i == 0) {
                 k--;
@@ -175,28 +178,97 @@ $('#btn-check').click(function () {
         $('#hideText').show().delay(1000).fadeOut();
 });
 //get score and update database             // cập nhật điểm vào CSDL
-//$('#btn-score').click(function () {
-//    var sum = 0;
-//    for (let i in scores)
-//        sum += scores[i];
-//    console.log("Score: " + sum / numTrack);
-//    var scoreObj = {
-//        "DateCreate": new Date(),
-//        "Level": $('span#level').text(),
-//        "AudioScore": sum / numTrack
-//    };
-//    $.ajax({
-//        url: "http://localhost:2376/scores/addscore/",
-//        type: "POST",
-//        data: JSON.stringify(scoreObj),
-//        contentType: "application/json; charset=utf-8",
-//        dataType: "json",
-//        error: function (respone) {
-//            console.log(respone);
-//        },
-//        success: function (respone) {
-//            console.log(respone);
-//        }
-//    });
-//    window.location = "http://localhost:2376/scores/getlastscores/" + $('span#level').text();
-//});
+
+$('#btn-score').click(function () {
+    $('#chartContainer').show();
+    var sum = 0;
+    for (let i in scores)
+        sum += scores[i];
+    console.log("Score: " + sum / numTrack);
+    var scoreObj = {
+        "CreateDate": new Date(),
+        "AudioScore": sum / numTrack,
+        "Mode": true,
+        "AudioID": $('#id').text(),
+    };
+    console.log(scoreObj);
+    $.ajax({
+        url: "http://localhost:54941/Audio/AddScore/",
+        type: "POST",
+        data: JSON.stringify(scoreObj),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        error: function (respone) {
+            console.log(respone);
+        },
+        success: function (respone) {
+            console.log(respone);
+        }
+    });
+
+    $.ajax({
+        url: "/Audio/GetLastScores/",
+        data: JSON.stringify(scoreObj),
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            console.log(data[0].CreateDate);
+            var dataPoints = [];
+
+            for (var i = 0; i < data.length; i++) {
+
+                var dateString = data[i].CreateDate.substr(6);
+                var currentTime = new Date(parseInt(dateString));
+                var month = ("0" + (currentTime.getMonth() + 1)).slice(-2);
+                var day = ("0" + currentTime.getDate()).slice(-2);
+                var year = currentTime.getFullYear();
+                var date = day + '/' + month + '/' + year;
+
+                dataPoints.push({
+                    label: date,
+                    y: data[i].AudioScore
+                });
+            }
+
+            dataPoints.push({
+                label: scoreObj.CreateDate.getDate() + "/" + scoreObj.CreateDate.getMonth() + "/" + scoreObj.CreateDate.getFullYear(),
+                y: scoreObj.AudioScore,
+                indexLabel: "NEW",
+                markerColor: "red",
+                markerType: "triangle"
+            });
+            console.log(dataPoints);
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Score History"
+                },
+                axisX: {
+                    valueFormatString: "",
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisY: {
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    color: "#33cc33",
+                    dataPoints: dataPoints
+                }]
+            });
+
+            chart.render();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr, ajaxOptions, thrownError);
+        }
+    })
+});
+
+

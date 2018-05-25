@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+    $('#btn-prev').attr('disabled', 'disabled');
     $("li").click(function(){
     	$("li").removeClass("active");
     	$(this).addClass("active");
@@ -11,7 +11,7 @@ $(document).ready(function(){
     	$("#btnNew").hide();
     	$("#btnFull").hide();
 	});
-
+    
 	$("#btnFull").click(function(){
     	$("#FullMode").show();
     	$("#btnFull").hide();	
@@ -36,7 +36,10 @@ $(document).ready(function(){
     		$("#btnNew").show(); 
 		} else {
 		}
-	});
+    });
 
 });
 
+$(window).load(function () {
+    $('#btn-prev').attr('disabled', 'disabled');
+});

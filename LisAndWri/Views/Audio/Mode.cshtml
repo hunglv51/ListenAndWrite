@@ -9,7 +9,7 @@
 }
 <div>
     <div class="col-lg-6">      
-        <img src="~/images/pics02.jpg" alt="FullMode" style="width:100%" />
+        <a href="/Audio/FullMode/@Model.ID"><img src="~/images/pics02.jpg" alt="FullMode" style="width:100%" /></a>
         <div class="content">
             <h1>@Html.ActionLink("Full Mode", "FullMode", "Audio", new { id = Model.ID }, new { @class = "white" })</h1>
             <p>@Html.ActionLink("Type the whole letter of a word", "FullMode", "Audio", new { id = Model.ID }, new { @class = "white" })</p>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="col-lg-6">
-        <img src="~/images/pics03.jpg" alt="NewMode" style="width:100%" />
+        <a href="/Audio/NewMode/@Model.ID"><img src="~/images/pics03.jpg" alt="NewMode" style="width:100%" /></a>
         <div class="content">
             <h1>@Html.ActionLink("New Mode", "NewMode", "Audio", new { id = Model.ID }, new { @class = "white" })</h1>
             <p>@Html.ActionLink("Type full sentence and correct it", "NewMode", "Audio", new { id = Model.ID }, new { @class = "white" })</p>

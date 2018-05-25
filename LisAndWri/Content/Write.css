@@ -118,9 +118,9 @@ th {
 }
 
 
-td {
+/*td {
     width: 80%;
-}
+}*/
 
 .button {
     border-radius: 12px;
@@ -205,3 +205,4 @@ a, a:hover, a:active {
 .white{
     color: white;
 }
+

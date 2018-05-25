@@ -14,78 +14,99 @@
 
 <div class="container">
     <div class="row">
-        <button id="level">@Html.ActionLink("Level " + Model.Level, "Move", "Audio", new { id = Model.Level }, null)</button>
-        <h2 id="audioTitle">@Model.Title</h2>
-        <p>Duration: @Model.Duration (s)</p>
-        <p>Nhấn Play để bắt đầu làm bài</p>
-        <div class="form-group row">
-            <div class="col-lg-12">
-                <button class="btn btn-info btn-sm" id="btn-prev">
-                    <span class="glyphicon glyphicon-chevron-left">Back</span>
-                </button>
-                Track: <input type="text" id="currTrack" value="1" max="@Model.NumTrack" class="form-inline" style="max-width:30px" readonly />/ <input type="text" value="@Model.NumTrack" readonly id="numTrack" style="max-width:30px" />
-                <button class="btn btn-info btn-sm btn-next" id="btn-next">
-                    <span class="glyphicon glyphicon-chevron-right">Next</span>
-                </button>
-            </div>
-        </div>
-
-        @{var audioSrc = Url.Content("~/AudioData/" + Model.Title + ".mp3"); }
-
-        <audio src="@audioSrc" hidden="hidden" id="audio"></audio>
-
-        <label for="answer">Đáp án</label>
-        <div class="form-group">
-            <div id="answer" class="form-control " style="min-width:100%;font-weight:bolder;height:100px"></div>
-        </div>
-
-        <div class="form-group text-center">
-            <button class="btn btn-info btn-lg" id="btn-play">
-                <span class="glyphicon glyphicon-play"></span>Phát
+        <table>
+            <tr>
+                <td width="30%">
+                    <button id="level">@Html.ActionLink("Level " + Model.Level, "Move", "Audio", new { id = Model.Level }, null)</button>
+                </td>
+                <td width="70%">
+                    <h2 id="audioTitle">@Model.Title</h2>
+                    <p>Duration: @Model.Duration (s)</p>
+                    <p>Nhấn Play để bắt đầu làm bài</p>
+                </td>
+                <td>
+                    <p id="id" hidden>@Model.ID</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <button class="btn btn-primary btn-sm" id="btn-prev">
+                <span class="glyphicon glyphicon-chevron-left">Back</span>
             </button>
-            <div class="btn btn-info btn-lg btn-next" id="btn-next2">
-                <span class="glyphicon glyphicon-plus"></span>Next track
-            </div>
-            <div class="btn btn-info btn-lg" id="btn-score">
-                <span class="glyphicon glyphicon-certificate"></span>Xem điểm
-            </div>
-        </div>
-        <hr />
-        <button class="btn btn-info btn-lg" id="btn-check">
-            <span class="glyphicon glyphicon-eye-open"></span>Gợi ý
-        </button>
-        <hr />
-        <label for="input">Câu trả lời</label>
-        <div class="form-group">
-            <textarea id="input" class="form-control input-lg col-lg-12" rows="5" style="min-width:100%;font-weight:bolder; height:50px"></textarea>
+            Track: <input type="text" id="currTrack" value="1" max="@Model.NumTrack" class="form-inline" style="max-width:30px" readonly />/ <input type="text" value="@Model.NumTrack" readonly id="numTrack" style="max-width:30px" />
+            <button class="btn btn-primary btn-sm btn-next" id="btn-next">
+                <span class="glyphicon glyphicon-chevron-right">Next</span>
+            </button>
         </div>
     </div>
-    <div>
-        <span>A</span>
-        <span>B</span>
-        <span>C</span>
-        <span>D</span>
-        <span>E</span>
-        <span>F</span>
-        <span>G</span>
-        <span>H</span>
-        <span>I</span>
-        <span>J</span>
-        <span>K</span>
-        <span>L</span>
-        <span>M</span>
-        <span>N</span>
-        <span>O</span>
-        <span>P</span>
-        <span>Q</span>
-        <span>R</span>
-        <span>S</span>
-        <span>T</span>
-        <span>U</span>
-        <span>V</span>
-        <span>W</span>
-        <span>X</span>
-        <span>Y</span>
-        <span>Z</span>
+
+    @{var audioSrc = Url.Content("~/AudioData/" + Model.Title + ".mp3"); }
+
+    <audio src="@audioSrc" hidden="hidden" id="audio"></audio>
+
+    <label for="answer">Đáp án</label>
+    <div class="form-group">
+        <div id="answer" class="form-control " style="min-width:100%;font-weight:bolder;height:100px"></div>
+    </div>
+
+    <div class="form-group text-center">
+        <button class="btn btn-primary btn-lg" id="btn-play">
+            <span class="glyphicon glyphicon-play"></span>Phát
+        </button>
+        <div class="btn btn-primary btn-lg btn-next" id="btn-next2">
+            <span class="glyphicon glyphicon-plus"></span> Next track
+        </div>
+        <div class="btn btn-primary btn-lg" id="btn-score">
+            <span class="glyphicon glyphicon-certificate"></span><a href="#chartContainer" style="color: white">Xem điểm</a>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary col-lg-2" id="stop" style="margin-right:5px;">
+            <span class="glyphicon glyphicon-stop"></span> Dừng phát
+        </button>
+        <button class="btn btn-primary col-lg-2" id="xemgoiy" style="margin-left:5px;">
+            <span class="glyphicon glyphicon-eye-open"></span> Gợi ý
+        </button>
+        <p id="goiy" class="col-lg-4" style="color: blue; font-size:large;"></p>
+    </div>
+    <hr />
+    <label for="input">Câu trả lời</label>
+    <div class="form-group">
+        <input id="input" class="form-control input-lg col-lg-12" rows="5" style="min-width:100%;font-weight:bolder; height:50px">
     </div>
 </div>
+<div id="keylock" style="display: none">
+    <span id="a">A</span>
+    <span id="b">B</span>
+    <span id="c">C</span>
+    <span id="d">D</span>
+    <span id="e">E</span>
+    <span id="f">F</span>
+    <span id="g">G</span>
+    <span id="h">H</span>
+    <span id="i">I</span>
+    <span id="j">J</span>
+    <span id="k">K</span>
+    <span id="l">L</span>
+    <span id="m">M</span>
+    <span id="n">N</span>
+    <span id="o">O</span>
+    <span id="p">P</span>
+    <span id="q">Q</span>
+    <span id="r">R</span>
+    <span id="s">S</span>
+    <span id="t">T</span>
+    <span id="u">U</span>
+    <span id="v">V</span>
+    <span id="w">W</span>
+    <span id="x">X</span>
+    <span id="y">Y</span>
+    <span id="z">Z</span>
+</div>
+
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+
+
